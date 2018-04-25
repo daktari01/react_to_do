@@ -7,14 +7,37 @@ class NoteForm extends Component {
         this.state = {
             newNoteContent: '',
         };
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.writeNote = this.writeNote.bind(this);
+    }
+
+    // When the user input changes, set the newNoteContent to the value of 
+    // what's in the input box.
+    handleUserInput(e){
+        this.setState({
+            newNoteContent: e.target.value, // The valueof the text input
+        });
+    }
+    writeNote(){
+        // Call a method that sets the noteContent for a note to the 
+        // value of the input
+
+        this.props.addNote(this.state.newNoteContent);
+
+        // Set newNoteContent back to an empty string
+        this.setState({
+            newNoteContent: '',
+        });
     }
     render(){
         return(
             <div className="formWrapper">
                 <input className="noteInput"
                 placeholder="Write a note ..."
-                value={this.state.newNoteContent} />
-                <button className="noteButton">Add Note</button>
+                value={this.state.newNoteContent}
+                onChange={this.handleUserInput} />
+                <button className="noteButton"
+                onClick={this.writeNote}>Add Note</button>
             </div>
         );
     }
