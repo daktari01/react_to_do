@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import Note from './Note/Note';
 import NoteForm from './NoteForm/NoteForm';
+import { DB_CONFIG } from './Config/config';
+import firebase from 'firebase/app';
 import './App.css';
 
 class App extends Component {
@@ -9,12 +11,13 @@ class App extends Component {
   constructor(props){
     super(props);
     this.addNote = this.addNote.bind(this);
+
+    this.app = firebase.initializeApp(DB_CONFIG);
+    this.db = this.app.database().ref().child('notes');
+
     // We're going to setup the React state of our component
     this.state = {
-      notes: [
-        { id: 1, noteContent: "Note 1 here!" },
-        { id: 2, noteContent: "Note 2 here!" }
-      ],
+      notes: [],
     }
   }
 
