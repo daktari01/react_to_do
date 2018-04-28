@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import Note from './Note/Note';
 import NoteForm from './NoteForm/NoteForm';
 import { DB_CONFIG } from './Config/config';
 import firebase from 'firebase/app';
+import 'firebase/database';
 import './App.css';
 
 class App extends Component {
@@ -21,13 +21,30 @@ class App extends Component {
     }
   }
 
+  componentWillMount(){
+    const previousNotes = this.state.notes; 
+
+    // DataSnapshot object
+    this.database.on('child_added', snap => {
+      previousNotes.push({
+        id: snap.key,
+        noteContent: snap.val().noteContent,
+      })
+      this.setState({
+        notes: previousNotes
+      })
+    })
+  }
+
   addNote(note){
     // Push the note onto the notes array
+    /*
     const previousNotes = this.state.notes;
     previousNotes.push({ id: previousNotes.length + 1, noteContent: note});
     this.setState({
       notes: previousNotes
-    });
+    });*/
+    this.database.push().set({ noteContent: note });
   }
 
   render() {
